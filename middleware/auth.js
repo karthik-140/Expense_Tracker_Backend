@@ -10,9 +10,10 @@ const authenticate = (req, res, next) => {
     User.findByPk(user.userId).then((user) => {
       req.user = user
       next()
-    })
+    }).catch((err) => { throw new Error(err) })
   } catch (err) {
     console.log(err)
+    return res.status(401).json({ success: false });
   }
 }
 
