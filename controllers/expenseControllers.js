@@ -35,19 +35,21 @@ exports.getExpenses = async (req, res, next) => {
   try {
     // Dynamic pagination code
 
-    // console.log('req.query--->', +req.query.page)
-    // const page = +req.query.page || 1
-    // const ITEMS_PER_PAGE = 5
-    // const response = await expenses.findAll(
-    //   {
-    //     where: { userId: req.user.id },
-    //     offset: (page - 1) * ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE
-    //   },
-    // )
-  
-    const response = await expenses.findAll({ where: { userId: req.user.id } })
+    console.log('req.queryPage--->', +req.query.page)
+    console.log('req.queryLimit--->', +req.query.limit)
+    const page = +req.query.page || 0
+    const ITEMS_PER_PAGE = +req.query.limit
+    const response = await expenses.findAndCountAll(
+      {
+        where: { userId: req.user.id },
+        offset: page * ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE
+      },
+    )
+
+    // const response = await expenses.findAll({ where: { userId: req.user.id } })
+    // console.log('response---->', response);
     if (response) {
-      res.status(200).json({ message: 'Expenses fetched successfully!!', response })
+      res.status(200).json({ message: 'Expenses fetched successfully!!', totalExpenses: response.count, expenses: response.rows })
     } else {
       res.status(400).json({ message: 'Something went wrong!!', response })
     }
