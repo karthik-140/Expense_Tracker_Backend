@@ -84,9 +84,6 @@ exports.forgotPassword = async (req, res, next) => {
         { id, userId: user.id, active: true },
         { transaction: t }
       )
-      // else {
-      //   return res.status(404).json({ message: 'User not found' });
-      // }
 
       const client = Sib.ApiClient.instance
 
@@ -112,7 +109,7 @@ exports.forgotPassword = async (req, res, next) => {
       `,
         htmlContent: `
        <h1>Click on the below link to reset your password.</h1>
-       <a href='http://localhost:3000/user/password/resetPassword/${id}'>Reset Password<a/>
+       <a href='${process.env.FRONTEND_HOST}/user/password/resetPassword/${id}'>Reset Password<a/>
       `
       })
 
