@@ -10,7 +10,7 @@ exports.purchasePremium = async (req, res, next) => {
       key_id: process.env.RAZORPAY_KEY_ID,
       key_secret: process.env.RAZORPAY_KEY_SECRET
     })
-    const amount = 5000;
+    const amount = 100;
     const order = await rzp.orders.create({ amount, currency: 'INR' })
 
     await req.user.createOrder({ orderId: order.id, status: 'PENDING' })
